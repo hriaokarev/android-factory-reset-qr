@@ -3,6 +3,7 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 REPO_NAME="${1:-android-factory-reset-qr}"
+REPO="${GITHUB_REPO:-hriaokarev/android-factory-reset-qr}"
 VISIBILITY="${2:-public}"
 
 cd "$ROOT"
@@ -30,4 +31,6 @@ fi
 git push -u origin main
 
 echo ""
-echo "公開完了: https://github.com/$USER/$REPO_NAME"
+echo "公開完了: https://github.com/$REPO"
+echo ""
+echo "次: ./release_apk.sh v1.0.0  # APK を Releases に公開"

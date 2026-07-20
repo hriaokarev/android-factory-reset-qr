@@ -6,32 +6,42 @@
 - 管理アプリ（Device Owner DPC）のインストール
 - USB デバッグの有効化
 
+リポジトリ: https://github.com/hriaokarev/android-factory-reset-qr
+
 ## 必要なもの
 
-- macOS（Android SDK / JDK 17 推奨）
-- Python 3
-- 同一 Wi-Fi 上で APK を配信できる PC
+- macOS（Android SDK / JDK 17 推奨）— QR を作り直す場合のみ
+- Python 3 — QR を作り直す場合のみ
+- **端末利用時は PC 不要**（APK は GitHub Releases から取得）
 
-## セットアップ
+## クイックスタート（QR 印刷して使う）
+
+1. [Releases](https://github.com/hriaokarev/android-factory-reset-qr/releases) から `adbdpc.apk` が公開されていることを確認
+2. ローカルで QR を生成（Wi-Fi 情報を設定）
+3. QR を印刷
+4. 端末を工場出荷状態に戻す → ようこそ画面を **6 回タップ** → QR 読み取り
 
 ```bash
-git clone https://github.com/YOUR_USER/android-factory-reset-qr.git
+git clone https://github.com/hriaokarev/android-factory-reset-qr.git
 cd android-factory-reset-qr
 
 cp config.json.example config.json
-# config.json を編集（Wi-Fi SSID/パスワード、Mac の IP）
+# config.json の Wi-Fi を編集
 
 pip3 install -r requirements.txt
-./build_dpc.sh
 python3 generate_qr.py
-./serve_apk.sh   # 別ターミナルで APK 配信
+# → dist/provisioning_qr.png
 ```
 
-生成物:
+`config.json.example` の `download_url` は GitHub Releases を指しています。  
+**PC を起動したままにしておく必要はありません。**
 
-- `dist/provisioning_qr.png` … 端末で読み取る QR
-- `dist/provisioning.json` … QR の中身（確認用）
-- `dist/adbdpc.apk` … 管理アプリ
+## APK を更新したい場合（管理者向け）
+
+```bash
+./release_apk.sh v1.0.0   # ビルド → GitHub Releases に APK 公開
+python3 generate_qr.py      # 新しい checksum で QR 再生成
+```
 
 ## 端末側の手順
 
@@ -46,9 +56,18 @@ python3 generate_qr.py
 |------|------|
 | `wifi.ssid` | 接続先 Wi-Fi 名 |
 | `wifi.password` | Wi-Fi パスワード |
-| `dpc.download_url` | APK の URL（`serve_apk.sh` 実行中の Mac IP） |
+| `dpc.download_url` | APK の URL（GitHub Releases 推奨） |
 
-Mac の IP が変わったら `config.json` を更新して `python3 generate_qr.py` を再実行してください。
+APK を更新したら `release_apk.sh` 実行後、必ず QR を作り直してください（署名 checksum が変わるため）。
+
+## Google アカウントについて
+
+**このアプリは Google ログインを自動で行いません。**
+
+- QR プロビジョニングは Google アカウントなしでも動作します
+- 初期設定後、端末が **Google アカウント追加画面** を出す場合があります（機種・Android 版本による）
+- **自動ログイン**（メール/パスワードを QR に入れて勝手にサインイン）は Android の仕様上不可
+- Google Workspace 連携が必要なら [Android Management API](https://developers.google.com/android/management) や Google の Cloud DPC が必要
 
 ## セキュリティ
 
