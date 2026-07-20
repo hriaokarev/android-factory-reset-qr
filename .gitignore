@@ -1,0 +1,21 @@
+# ローカル設定（Wi-Fi パスワード等）
+config.json
+
+# 生成物
+dist/
+*.apk
+*.png
+
+# Android / Gradle
+dpc/.gradle/
+dpc/**/build/
+dpc/local.properties
+*.iml
+.idea/
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/

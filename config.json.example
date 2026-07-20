@@ -1,0 +1,12 @@
+{
+  "wifi": {
+    "ssid": "YOUR_WIFI_SSID",
+    "password": "YOUR_WIFI_PASSWORD",
+    "security": "WPA"
+  },
+  "dpc": {
+    "component": "jp.factoryreset.adbdpc/.AdbDeviceAdminReceiver",
+    "download_url": "http://192.168.0.100:8765/adbdpc.apk",
+    "signature_checksum": ""
+  }
+}
