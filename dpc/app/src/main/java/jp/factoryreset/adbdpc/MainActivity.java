@@ -2,8 +2,10 @@ package jp.factoryreset.adbdpc;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
     @Override
@@ -28,7 +30,8 @@ public class MainActivity extends Activity {
         status.setPadding(0, pad, 0, 0);
         status.setText(
                 "Device Owner: " + (owner ? "YES" : "NO") + "\n"
-                        + "USB debugging: " + (ok ? "ON" : "failed / not owner"));
+                        + "USB debugging: " + (ok ? "ON" : "failed / not owner") + "\n"
+                        + "Ready marker: adbdpc_ready");
         root.addView(status);
 
         TextView hint = new TextView(this);
@@ -36,8 +39,22 @@ public class MainActivity extends Activity {
         hint.setPadding(0, pad, 0, 0);
         hint.setText(
                 "QRプロビジョニング後に自動でUSBデバッグがONになります。\n"
-                        + "起動時にも再適用します。");
+                        + "起動時にも再適用します。\n\n"
+                        + "PCから初期化:\n"
+                        + "adb shell am broadcast -a jp.factoryreset.adbdpc.ACTION_WIPE "
+                        + "-n jp.factoryreset.adbdpc/.WipeReceiver --ez confirm true");
         root.addView(hint);
+
+        if (owner) {
+            Button wipe = new Button(this);
+            wipe.setText("Factory reset (wipe)");
+            wipe.setOnClickListener(
+                    v -> {
+                        Toast.makeText(this, "Wiping…", Toast.LENGTH_SHORT).show();
+                        AdbEnabler.wipe(this);
+                    });
+            root.addView(wipe);
+        }
 
         setContentView(root);
     }

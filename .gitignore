@@ -1,5 +1,6 @@
 # ローカル設定（Wi-Fi パスワード等）
 config.json
+automation/automation_config.json
 
 # 生成物
 dist/

@@ -64,5 +64,19 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".WipeReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="jp.factoryreset.adbdpc.ACTION_WIPE" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".WipeActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.NoDisplay" />
     </application>
 </manifest>

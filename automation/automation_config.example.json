@@ -1,0 +1,45 @@
+{
+  "otg": {
+    "validated": false,
+    "device_model": "",
+    "android_version": "",
+    "notes": ""
+  },
+  "jig": {
+    "qr_ready": false,
+    "tap_x": 0.5,
+    "tap_y": 0.45,
+    "notes": ""
+  },
+  "hid": {
+    "backend": "pi_agent",
+    "tap_count": 6,
+    "tap_interval_sec": 0.45,
+    "pre_tap_delay_sec": 8.0,
+    "screen_width": 1080,
+    "screen_height": 2400
+  },
+  "usb_switch": {
+    "backend": "mock",
+    "pi_target": "pi",
+    "pc_target": "pc",
+    "gpio_pin": 17,
+    "serial_port": "/dev/ttyUSB0",
+    "http_url": "http://127.0.0.1:8791/switch"
+  },
+  "pi_agent": {
+    "base_url": "http://192.168.0.50:8790",
+    "timeout_sec": 30
+  },
+  "wipe": {
+    "method": "dpc_broadcast",
+    "countdown_sec": 5,
+    "package": "jp.factoryreset.adbdpc"
+  },
+  "wait": {
+    "after_wipe_sec": 45,
+    "provision_timeout_sec": 600,
+    "adb_wait_timeout_sec": 300,
+    "poll_interval_sec": 3
+  }
+}

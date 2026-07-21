@@ -6,7 +6,7 @@
   },
   "dpc": {
     "component": "jp.factoryreset.adbdpc/.AdbDeviceAdminReceiver",
-    "download_url": "https://github.com/hriaokarev/android-factory-reset-qr/releases/download/v1.0.0/adbdpc.apk",
+    "download_url": "https://github.com/hriaokarev/android-factory-reset-qr/releases/download/v1.0.1/adbdpc.apk",
     "signature_checksum": ""
   }
 }

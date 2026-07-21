@@ -33,22 +33,42 @@ python3 generate_qr.py
 # → dist/provisioning_qr.png
 ```
 
-`config.json.example` の `download_url` は GitHub Releases を指しています。  
-**PC を起動したままにしておく必要はありません。**
+## 工場リセット〜ADB復帰の自動化
+
+印刷QR＋ラズパイHIDマウス＋USBスイッチで、初期化後に切れたADBをPCへ戻す。
+
+詳細は **[automation/README.md](automation/README.md)**。
+
+```bash
+cd automation
+cp automation_config.example.json automation_config.json
+python3 orchestrate.py --dry-run
+# 実機準備後:
+# python3 orchestrate.py
+```
+
+流れ: `wipe` → USBをPiへ → HIDで6タップ → 固定QR読取 → USBをPCへ → `adb wait-for-device`
 
 ## APK を更新したい場合（管理者向け）
 
 ```bash
-./release_apk.sh v1.0.0   # ビルド → GitHub Releases に APK 公開
-python3 generate_qr.py      # 新しい checksum で QR 再生成
+./release_apk.sh v1.0.1   # ビルド → GitHub Releases に APK 公開
+python3 generate_qr.py    # 新しい checksum で QR 再生成
 ```
 
-## 端末側の手順
+## 端末側の手順（手動）
 
 1. 工場出荷状態に戻す
 2. 初期設定の「ようこそ」画面を **同じ場所で 6 回タップ**
 3. QR コードを読み取る
 4. Wi-Fi 接続 → 管理アプリ導入 → USB デバッグ ON
+
+## Device Owner からの wipe（ADB生存中）
+
+```bash
+adb shell am broadcast -a jp.factoryreset.adbdpc.ACTION_WIPE \
+  -n jp.factoryreset.adbdpc/.WipeReceiver --ez confirm true
+```
 
 ## 設定ファイル
 
@@ -64,15 +84,10 @@ APK を更新したら `release_apk.sh` 実行後、必ず QR を作り直して
 
 **このアプリは Google ログインを自動で行いません。**
 
-- QR プロビジョニングは Google アカウントなしでも動作します
-- 初期設定後、端末が **Google アカウント追加画面** を出す場合があります（機種・Android 版本による）
-- **自動ログイン**（メール/パスワードを QR に入れて勝手にサインイン）は Android の仕様上不可
-- Google Workspace 連携が必要なら [Android Management API](https://developers.google.com/android/management) や Google の Cloud DPC が必要
-
 ## セキュリティ
 
 - QR コード内に **Wi-Fi パスワードが平文** で入ります
-- `config.json` は Git に含めません（`.gitignore` 済み）
+- `config.json` / `automation/automation_config.json` は Git に含めません
 - 公開リポジトリにパスワードをコミットしないでください
 
 ## ライセンス
